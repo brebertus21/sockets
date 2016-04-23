@@ -36,6 +36,7 @@ void client(int connect){
         cout << "Enter message: ";
         getline(cin, toSend);
         toSend += '\0';
+        cout << toSend;
         send(connect, toSend.c_str(), toSend.size(), 0);
     }
 }
@@ -95,7 +96,7 @@ int main(int argc, const char * argv[]) {
         
         addr.sin_port = htons(portnum);
 
-        connect(sock, (sockaddr*)&addr, sizeof(addr));
+        cout << connect(sock, (sockaddr*)&addr, sizeof(addr));
         
         client(sock);
 
