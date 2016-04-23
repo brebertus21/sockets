@@ -15,5 +15,22 @@
 using namespace std;
 
 int main(int argc, const char * argv[]) {
+    bool serverMode;
+    if (!strcmp("server", argv[1])){
+        serverMode = true;
+    } else if (!strcmp("client", argv[1])){
+        serverMode = false;
+    } else {
+        cout << "Specify 'server' or 'client'\n";
+        return 0;
+    }
+    
+    auto sock = socket(AF_INET, SOCK_STREAM, 0);
+    
+    
+    
+    
+    
+    
     return 0;
 }
