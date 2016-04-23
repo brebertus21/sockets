@@ -22,6 +22,8 @@ void server(int connect){
     while(true){
         char buff;
         size_t bytesWritten = recv(connect, &buff, sizeof(buff), 0);
+        cout << bytesWritten;
+        cout << buff;
         if (buff == '\0') break;
         else str += buff;
     }
@@ -66,9 +68,9 @@ int main(int argc, const char * argv[]) {
         addr.sin_port = htons(0);
         addr.sin_addr.s_addr = htonl(INADDR_ANY);
         
-        bind(sock, (sockaddr*)&addr, sizeof(addr));
+        ::bind(sock, (sockaddr*)&addr, sizeof(addr));
         
-        listen(sock, 1);
+        listen(sock, 0);
         
         sockaddr_in addr;
         socklen_t len = sizeof(addr);
@@ -78,6 +80,7 @@ int main(int argc, const char * argv[]) {
         
         while (true) {
             auto clientConnection = accept(sock, 0, 0);
+            cout << "accepted conection";
             server(clientConnection);
         }
         
