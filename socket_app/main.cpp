@@ -93,6 +93,8 @@ int main(int argc, const char * argv[]) {
         addr.sin_port = htons(portnum);
 
         connect(sock, (sockaddr*)&addr, sizeof(addr));
+        
+        client(sock);
 
     }
     
