@@ -14,10 +14,15 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netinet/tcp.h>
+#include <unistd.h>
 using namespace std;
 
 int main(int argc, const char * argv[]) {
     bool serverMode;
+    if (argc < 2){
+        cout << "Specify 'server' or 'client'\n";
+        return 0;
+    }
     if (!strcmp("server", argv[1])){
         serverMode = true;
     } else if (!strcmp("client", argv[1])){
@@ -29,7 +34,29 @@ int main(int argc, const char * argv[]) {
     
     auto sock = socket(AF_INET, SOCK_STREAM, 0);
     
-    
+    int yes = 1;
+    setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &yes, 4);
+    sockaddr_in addr; //structure will define how we connect
+    addr.sin_family = AF_INET;
+    if (serverMode){
+        cout << "Starting server\n";
+        
+        addr.sin_port = htons(0);
+        addr.sin_addr.s_addr = htonl(INADDR_ANY);
+        
+        bind(sock, (sockaddr*)&addr, sizeof(addr));
+        
+        listen(sock, 1);
+        
+        sockaddr_in addr;
+        socklen_t len = sizeof(addr);
+        getsockname(sock, (sockaddr*)&addr, &len);
+        unsigned short port = ntohs(addr.sin_port);
+        cout << "PORT: " << port << endl;
+        
+    } else {
+        
+    }
     
     
     
