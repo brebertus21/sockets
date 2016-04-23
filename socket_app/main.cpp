@@ -17,6 +17,26 @@
 #include <unistd.h>
 using namespace std;
 
+void server(int connect){
+    while(true){
+        char buff;
+        string str;
+        size_t bytesWritten = recv(connect, &buff, sizeof(buff), 0);
+        if (buff == '\0') break;
+        else str += buff;
+    }
+}
+
+void client(int connect){
+    while (true) {
+        string toSend;
+        getline(cin, toSend);
+        toSend += '\0';
+        send(connect, toSend.c_str(), toSend.size(), 0);
+    }
+}
+
+
 int main(int argc, const char * argv[]) {
     bool serverMode;
     if (argc < 2){
@@ -54,8 +74,24 @@ int main(int argc, const char * argv[]) {
         unsigned short port = ntohs(addr.sin_port);
         cout << "PORT: " << port << endl;
         
-    } else {
+        while (true) {
+            auto clientConnection = accept(sock, 0, 0);
+            server(clientConnection);
+        }
         
+    } else {
+        cout << "Client attempting connection..." << endl;
+        addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+        unsigned short portnum;
+        cout << "Connect to port: ";
+        cin >> portnum;
+        string junk; //throw away the newline so we don't send it later
+        getline(cin, junk);
+        
+        addr.sin_port = htons(portnum);
+
+        connect(sock, (sockaddr*)&addr, sizeof(addr));
+
     }
     
     
