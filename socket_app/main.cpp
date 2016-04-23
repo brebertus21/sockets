@@ -18,18 +18,20 @@
 using namespace std;
 
 void server(int connect){
+    string str;
     while(true){
         char buff;
-        string str;
         size_t bytesWritten = recv(connect, &buff, sizeof(buff), 0);
         if (buff == '\0') break;
         else str += buff;
     }
+    cout << str;
 }
 
 void client(int connect){
     while (true) {
         string toSend;
+        cout << "Enter message: ";
         getline(cin, toSend);
         toSend += '\0';
         send(connect, toSend.c_str(), toSend.size(), 0);
